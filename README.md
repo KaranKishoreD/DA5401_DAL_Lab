@@ -61,3 +61,21 @@ pip install numpy pandas matplotlib seaborn scikit-learn imbalanced-learn jupyte
 
 # 6. Save requirements
 pip freeze > requirements.txt
+
+## Overall analysis
+
+As we can see above, setting the threshold higher can have a better performance balancing precision with recall. In our case, the models trained on GMMs are almost identical in performance.
+
+- Baseline has a much lower recal compared to any of the GMM models. It increases by 10-15% using GMMs which is excellent as we are able to get the minority samples predictions more correctly.
+
+- Factors such as Class ratio (majority: minority) seem to play a small role as well. As y increase in (x:y), i.e., the number of majority classes in CBU decreases, the recall tends to fall - this also shows that higher number of majority classes compared to minority is slightly better  (the weighted f1 score doesn't matter much though).
+
+## Reasons why precision could be low:
+
+- The dataspace could be non-linear in nature. So, a logistic regression based model may not be able to perform the classification.
+
+- The best performing model, going by the numbers is the second GMM where CBU is done on the majority sample and oversampling using GMM is done on the minority sample (precision ~ 0.5787 and recall ~ 0.7703). However, the precision needs to be much higher for a "real-life" implemenatations: several factors can improve this, for example by choosing an appropriate classification method.
+
+- The vanilla baseline model has a better precision but lower recall (0.6554). Here, recall is extremely important as we can't ignore a fraudulent transaction which leads me to the fact that GMM based sampling is better. Empirically, CBU undersampling and GMM based oversampling is slightly better as well as CBU just tries to remove datapoints that belong to a majority class cluster.
+
+## Overall, GMM based model have a better recall and precision that can be imporoved using better clustering methods and finetuning them.
